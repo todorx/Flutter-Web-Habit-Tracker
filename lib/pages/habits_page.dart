@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-
 import '../providers/habits_provider.dart';
 import '../providers/logs_provider.dart';
 import '../widgets/habit_card.dart';
 
 class HabitsPage extends ConsumerWidget {
-  const HabitsPage({Key? key}) : super(key: key);
+  const HabitsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,28 +43,39 @@ class HabitsPage extends ConsumerWidget {
                 data: (logs) {
                   final log = logs.where((l) => l.date == todayStr).firstOrNull;
                   final isCompleted = log?.completed == 1;
-                  
+
                   return GestureDetector(
                     onTap: () => context.go('/habit/\${habit.id}'),
                     child: HabitCard(
                       habit: habit,
                       isCompleted: isCompleted,
                       onToggle: () {
-                         ref.read(logsControllerProvider).toggleLog(
-                           habit.id, todayStr, isCompleted ? 1 : 0, null
-                         );
+                        ref
+                            .read(logsControllerProvider)
+                            .toggleLog(
+                              habit.id,
+                              todayStr,
+                              isCompleted ? 1 : 0,
+                              null,
+                            );
                       },
                       trailing: PopupMenuButton(
                         itemBuilder: (context) => [
-                          const PopupMenuItem(value: 'edit', child: Text('Edit')),
-                          const PopupMenuItem(value: 'archive', child: Text('Archive')),
+                          const PopupMenuItem(
+                            value: 'edit',
+                            child: Text('Edit'),
+                          ),
+                          const PopupMenuItem(
+                            value: 'archive',
+                            child: Text('Archive'),
+                          ),
                         ],
                         onSelected: (value) {
                           if (value == 'archive') {
-                            ref.read(habitsProvider.notifier).updateHabit(habit.id, {
-                              ...habit.toJson(),
-                              'archived': 1,
-                            });
+                            ref.read(habitsProvider.notifier).updateHabit(
+                              habit.id,
+                              {...habit.toJson(), 'archived': 1},
+                            );
                           }
                         },
                       ),
@@ -91,10 +101,23 @@ class HabitsPage extends ConsumerWidget {
     int colorValue = Colors.deepPurple.value;
     bool isDaily = true;
     final Map<String, bool> weekDays = {
-      'Mon': false, 'Tue': false, 'Wed': false, 'Thu': false, 'Fri': false, 'Sat': false, 'Sun': false
+      'Mon': false,
+      'Tue': false,
+      'Wed': false,
+      'Thu': false,
+      'Fri': false,
+      'Sat': false,
+      'Sun': false,
     };
 
-    final colors = [Colors.deepPurple, Colors.blue, Colors.green, Colors.orange, Colors.red, Colors.pink];
+    final colors = [
+      Colors.deepPurple,
+      Colors.blue,
+      Colors.green,
+      Colors.orange,
+      Colors.red,
+      Colors.pink,
+    ];
     final icons = ['🏃', '💧', '📚', '🧘', '🏋️', '🥗', '💻', '🎨'];
 
     showDialog(
@@ -108,66 +131,105 @@ class HabitsPage extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextField(controller: nameController, decoration: const InputDecoration(labelText: 'Name')),
-                    TextField(controller: descController, decoration: const InputDecoration(labelText: 'Description')),
+                    TextField(
+                      controller: nameController,
+                      decoration: const InputDecoration(labelText: 'Name'),
+                    ),
+                    TextField(
+                      controller: descController,
+                      decoration: const InputDecoration(
+                        labelText: 'Description',
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     // Icon Picker
                     Wrap(
                       spacing: 8,
-                      children: icons.map((i) => ChoiceChip(
-                        label: Text(i, style: const TextStyle(fontSize: 20)),
-                        selected: icon == i,
-                        onSelected: (val) => setState(() => icon = i),
-                      )).toList(),
+                      children: icons
+                          .map(
+                            (i) => ChoiceChip(
+                              label: Text(
+                                i,
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                              selected: icon == i,
+                              onSelected: (val) => setState(() => icon = i),
+                            ),
+                          )
+                          .toList(),
                     ),
                     const SizedBox(height: 16),
                     // Color Picker
                     Wrap(
                       spacing: 8,
-                      children: colors.map((c) => GestureDetector(
-                        onTap: () => setState(() => colorValue = c.value),
-                        child: Container(
-                          width: 32, height: 32,
-                          decoration: BoxDecoration(
-                            color: c,
-                            shape: BoxShape.circle,
-                            border: colorValue == c.value ? Border.all(color: Colors.white, width: 2) : null,
-                          ),
-                        ),
-                      )).toList(),
+                      children: colors
+                          .map(
+                            (c) => GestureDetector(
+                              onTap: () => setState(() => colorValue = c.value),
+                              child: Container(
+                                width: 32,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  color: c,
+                                  shape: BoxShape.circle,
+                                  border: colorValue == c.value
+                                      ? Border.all(
+                                          color: Colors.white,
+                                          width: 2,
+                                        )
+                                      : null,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
                     const SizedBox(height: 16),
                     // Frequency
                     Row(
                       children: [
                         const Text('Daily'),
-                        Switch(value: isDaily, onChanged: (v) => setState(() => isDaily = v)),
+                        Switch(
+                          value: isDaily,
+                          onChanged: (v) => setState(() => isDaily = v),
+                        ),
                       ],
                     ),
                     if (!isDaily)
                       Wrap(
                         spacing: 8,
-                        children: weekDays.keys.map((day) => FilterChip(
-                          label: Text(day),
-                          selected: weekDays[day]!,
-                          onSelected: (val) => setState(() => weekDays[day] = val),
-                        )).toList(),
+                        children: weekDays.keys
+                            .map(
+                              (day) => FilterChip(
+                                label: Text(day),
+                                selected: weekDays[day]!,
+                                onSelected: (val) =>
+                                    setState(() => weekDays[day] = val),
+                              ),
+                            )
+                            .toList(),
                       ),
                   ],
                 ),
               ),
               actions: [
-                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel'),
+                ),
                 FilledButton(
                   onPressed: () {
                     if (nameController.text.isEmpty) return;
                     String freq = 'daily';
                     if (!isDaily) {
-                      final selectedDays = weekDays.entries.where((e) => e.value).map((e) => e.key).toList();
+                      final selectedDays = weekDays.entries
+                          .where((e) => e.value)
+                          .map((e) => e.key)
+                          .toList();
                       if (selectedDays.isEmpty) return;
                       freq = selectedDays.join(',');
                     }
-                    
+
                     ref.read(habitsProvider.notifier).addHabit({
                       'name': nameController.text,
                       'description': descController.text,
@@ -181,9 +243,9 @@ class HabitsPage extends ConsumerWidget {
                 ),
               ],
             );
-          }
+          },
         );
-      }
+      },
     );
   }
 }

@@ -5,7 +5,7 @@ import '../providers/stats_provider.dart';
 import '../providers/habits_provider.dart';
 
 class StatsPage extends ConsumerWidget {
-  const StatsPage({Key? key}) : super(key: key);
+  const StatsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,26 +19,51 @@ class StatsPage extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.all(24),
             children: [
-              const Text('Overall Summary', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text(
+                'Overall Summary',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 16),
               ListTile(
                 title: const Text('Best Streak (across all habits)'),
-                trailing: Text('${stats["bestStreak"]} days', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                trailing: Text(
+                  '${stats["bestStreak"]} days',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               ListTile(
                 title: const Text('This Week Completion Rate'),
-                trailing: Text('${stats["weeklyRate"]}%', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                trailing: Text(
+                  '${stats["weeklyRate"]}%',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               const SizedBox(height: 32),
-              const Text('Active Habits', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text(
+                'Active Habits',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 16),
               habitsAsync.when(
                 data: (habits) => Column(
-                  children: habits.map((h) => ListTile(
-                    leading: Text(h.icon, style: const TextStyle(fontSize: 24)),
-                    title: Text(h.name),
-                    subtitle: Text(h.frequency),
-                  )).toList(),
+                  children: habits
+                      .map(
+                        (h) => ListTile(
+                          leading: Text(
+                            h.icon,
+                            style: const TextStyle(fontSize: 24),
+                          ),
+                          title: Text(h.name),
+                          subtitle: Text(h.frequency),
+                        ),
+                      )
+                      .toList(),
                 ),
                 loading: () => const CircularProgressIndicator(),
                 error: (e, s) => Text('Error: \$e'),

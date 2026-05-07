@@ -9,13 +9,13 @@ class HabitCard extends StatelessWidget {
   final Widget? trailing;
 
   const HabitCard({
-    Key? key,
+    super.key,
     required this.habit,
     required this.isCompleted,
     required this.onToggle,
     this.subtitle,
     this.trailing,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,9 @@ class HabitCard extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         side: BorderSide(
-          color: isCompleted ? color.withOpacity(0.2) : Theme.of(context).colorScheme.outlineVariant,
+          color: isCompleted
+              ? color.withOpacity(0.2)
+              : Theme.of(context).colorScheme.outlineVariant,
           width: 1,
         ),
         borderRadius: BorderRadius.circular(12),
@@ -43,16 +45,18 @@ class HabitCard extends StatelessWidget {
             color: isCompleted ? color.withOpacity(0.05) : null,
           ),
           child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            leading: Text(
-              habit.icon,
-              style: const TextStyle(fontSize: 28),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
             ),
+            leading: Text(habit.icon, style: const TextStyle(fontSize: 28)),
             title: Text(
               habit.name,
               style: TextStyle(
                 decoration: isCompleted ? TextDecoration.lineThrough : null,
-                color: isCompleted ? Theme.of(context).colorScheme.onSurfaceVariant : null,
+                color: isCompleted
+                    ? Theme.of(context).colorScheme.onSurfaceVariant
+                    : null,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -64,7 +68,8 @@ class HabitCard extends StatelessWidget {
                     ),
                   )
                 : null,
-            trailing: trailing ??
+            trailing:
+                trailing ??
                 GestureDetector(
                   onTap: onToggle,
                   child: AnimatedContainer(
@@ -75,7 +80,9 @@ class HabitCard extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: isCompleted ? color : Colors.transparent,
                       border: Border.all(
-                        color: isCompleted ? color : Theme.of(context).colorScheme.outline,
+                        color: isCompleted
+                            ? color
+                            : Theme.of(context).colorScheme.outline,
                         width: 2,
                       ),
                     ),

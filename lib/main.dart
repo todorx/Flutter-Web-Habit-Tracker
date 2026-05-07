@@ -16,9 +16,7 @@ void main() async {
 
   runApp(
     ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(prefs),
-      ],
+      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
       child: const HabitTrackerApp(),
     ),
   );
@@ -35,7 +33,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
-          return AppShell(child: child, state: state);
+          return AppShell(state: state, child: child);
         },
         routes: [
           GoRoute(
@@ -65,7 +63,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 });
 
 class HabitTrackerApp extends ConsumerWidget {
-  const HabitTrackerApp({Key? key}) : super(key: key);
+  const HabitTrackerApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -87,7 +85,7 @@ class AppShell extends ConsumerWidget {
   final Widget child;
   final GoRouterState state;
 
-  const AppShell({Key? key, required this.child, required this.state}) : super(key: key);
+  const AppShell({super.key, required this.child, required this.state});
 
   int _calculateSelectedIndex(BuildContext context) {
     final String location = state.uri.path;
