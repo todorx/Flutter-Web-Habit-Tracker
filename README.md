@@ -4,6 +4,14 @@ A modern, full-stack habit tracking application built to help you stay consisten
 
 This repository contains both the **Flutter Web** frontend and the **Dart Shelf** backend, wired up with a lightning-fast SQLite database.
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="screenshots/image1.png" width="30%" />
+  <img src="screenshots/image2.png" width="30%" />
+  <img src="screenshots/image3.png" width="30%" />
+</p>
+
 ## ✨ Features
 
 - **Dashboard & Analytics:** See your daily progress, weekly completion rates, and your best active streaks at a glance.
